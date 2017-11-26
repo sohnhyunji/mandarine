@@ -1,10 +1,261 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="data:image/x-icon;base64,AAABAAEAEBAQAAAAAAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAH3yAACM/wDb7P8ALDlHAAAuAwAAaN4AAFneAA8PDwAMawAAF8QAAAA7swBirvUAAAAAAAAAAAAAAAAAAAABZnZgAAAAAhEWe2tgAAAiIhFndmYAACIiIRZrawACIiIiEWZ2YAIiIiIhFntgDCMiIiiBZ2ACwiIiKEgWYAwjIyIiiBFgAsLCIiIiISAALCMjIiIiAAACwsIiIiAAAAAACZlQAAAAAAAAmpUAAAAAAABZqQAAAAAAAACZkAD4HwAA4AcAAMADAADAAwAAgAEAAIABAACAAQAAgAEAAIABAACAAQAAwAMAAOAHAAD+HwAA/w8AAP8PAAD/xwAA" rel="icon" type="image/x-icon" />
+	<title>MP3 파일 관리자</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+	<script type="text/javascript" src="/static/js/lib/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.min.js"></script>
+	<script type="text/javascript" src="/static/js/vue.js"></script>
 </head>
 <body>
+	<div class="container" id="app">
+		<div class="page-header">
+			<h1>MP3 파일 관리자</h1>
+		</div>	
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<p class="pull-right">
+							<a role="button" class="btn btn-default btn-xs" title="설정" data-toggle="modal" data-target="#configModal"><span class="glyphicon glyphicon-cog"></span></a>
+							<a role="button" class="btn btn-default btn-xs" title="업로드" data-toggle="modal" data-target="#uploadMp3Modal"><span class="glyphicon glyphicon-cloud-upload"></span></a>
+							<a role="button" class="btn btn-default btn-xs" title="디렉토리생성" data-toggle="modal" data-target="#mkDirModal"><span class="glyphicon glyphicon-plus"></span></a>
+							<a role="button" class="btn btn-default btn-xs" title="새로고침"><span class="glyphicon glyphicon-refresh"></span></a>
+						</p>
+						<h3 class="panel-title">파일 브라우저</h3>
+					</div>
+					<table class="table table-striped table-hover table-condensed">
+						<colgroup>
+							<col style="width: 3%;"></col>
+							<col style="width: *;"></col>
+							<col style="width: 25%;"></col>
+							<col style="width: 15%;"></col>
+						</colgroup>
+						<thead>
+							<tr>
+								<th colspan="4">
+									<ol class="breadcrumb" style="margin: 0;">
+										<li><a href="#">root</a></li>
+										<li><a href="#">path</a></li>
+										<li><a href="#">leaf</a></li>
+									</ol>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><span class="glyphicon glyphicon-level-up"></span></td>
+								<td colspan="3"><a href="#" title="상위폴더"><strong>..</strong></a></td>	
+							</tr>
+							<tr>
+								<td><span class="glyphicon glyphicon-folder-open"></span></td>
+								<td colspan="3">
+									<a href="#" title="폴더열기">최신곡</a>
+									<a href="#" title="다운로드" data-toggle="modal" data-target="#downMp3FilesModal"><span class="glyphicon glyphicon-cloud-download"></span></a>
+									<a href="#" title="디렉토리 수정" data-toggle="modal" data-target="#modDirModal"><span class="glyphicon glyphicon-edit"></span></a>
+									<a href="#" title="삭제" data-toggle="modal" data-target="#delMp3Modal"><span class="glyphicon glyphicon-remove"></span></a>
+								</td>
+							</tr>
+							<tr>
+								<td><span class="glyphicon glyphicon-music" title="MP3파일"></span></td>
+								<td>
+									<span>sing.mp3</span>
+									<a href="#" title="다운로드"><span class="glyphicon glyphicon-cloud-download"></span></a>
+									<a href="#" title="파일수정" data-toggle="modal" data-target="#modMp3Modal"><span class="glyphicon glyphicon-edit"></span></a>
+									<a href="#" title="삭제" data-toggle="modal" data-target="#delMp3Modal"><span class="glyphicon glyphicon-remove"></span></a>
+								</td>
+								<td>2017-07-18 11:22</td>
+								<td>11.3 MB</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 설정 모달 -->
+	<div class="modal fade" id="configModal" tabindex="-1" role="dialog" aria-labelledby="configModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="configModalLabel">설정</h4>
+				</div>
+				<div class="modal-body">
+					<form action="" method="post">
+						<div class="form-group">
+							<label for="abcdef" class="control-label">아직 기획 안됨</label>
+							<input type="text" class="form-control" id="abcdef">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">저장</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 업로드 모달 -->
+	<div class="modal fade" id="uploadMp3Modal" tabindex="-1" role="dialog" aria-labelledby="uploadMp3ModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="uploadMp3ModalLabel">업로드</h4>
+				</div>
+				<div class="modal-body">
+					<div class="input-group">
+						<input type="text" class="form-control" aria-label="">
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-default" id="btnSelectMp3File">MP3 파일 선택</button>
+						</div>
+					</div>
+					<form action="" method="post" class="form-horizontal">
+						<div class="form-group collapse">
+							<label for="title" class="col-sm-2 control-label">Title</label>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">저장</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$('#btnSelectMp3File').click(function() {
+
+			});
+		</script>
+	</div>
+
+	<!-- 디렉토리 생성 모달 -->
+	<div class="modal fade" id="mkDirModal" tabindex="-1" role="dialog" aria-labelledby="mkDirModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="mkDirModalLabel">디렉토리 생성</h4>
+				</div>
+				<div class="modal-body">
+					<form action="" method="post">
+						<div class="form-group">
+							<label for="abcdef" class="control-label">아직 기획 안됨</label>
+							<input type="text" class="form-control" id="abcdef">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">저장</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 파일 수정 모달 -->
+	<div class="modal fade" id="modMp3Modal" tabindex="-1" role="dialog" aria-labelledby="modMp3ModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="modMp3ModalLabel">디렉토리 생성</h4>
+				</div>
+				<div class="modal-body">
+					<form action="" method="post">
+						<div class="form-group">
+							<label for="abcdef" class="control-label">아직 기획 안됨</label>
+							<input type="text" class="form-control" id="abcdef">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">저장</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 파일 삭제 모달 -->
+	<div class="modal fade" id="delMp3Modal" tabindex="-1" role="dialog" aria-labelledby="delMp3ModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="delMp3ModalLabel">파일 삭제</h4>
+				</div>
+				<div class="modal-body">
+					<p>정말 삭제 하시겠습니까?</p>
+				</div>
+				<div class="modal-footer">
+					<form action="" method="post">
+						<button type="button" class="btn btn-primary">삭제</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 다중 파일 다운로드 모달 -->
+	<div class="modal fade" id="downMp3FilesModal" tabindex="-1" role="dialog" aria-labelledby="downMp3FilesModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="downMp3FilesModalLabel">파일 다운로드</h4>
+				</div>
+				<div class="modal-body">
+					<form action="" method="post">
+						<div class="form-group">
+							<label for="abcdef" class="control-label">아직 기획 안됨</label>
+							<input type="text" class="form-control" id="abcdef">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">저장</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 디렉토리 수정 모달 -->
+	<div class="modal fade" id="modDirModal" tabindex="-1" role="dialog" aria-labelledby="modDirModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="modDirModalLabel">디렉토리 수정</h4>
+				</div>
+				<div class="modal-body">
+					<form action="" method="post">
+						<div class="form-group">
+							<label for="abcdef" class="control-label">아직 기획 안됨</label>
+							<input type="text" class="form-control" id="abcdef">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">저장</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 </body>
+
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/app/admin.js"></script>
 </html>

@@ -12,4 +12,16 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
 	</context:component-scan>
 
+	<!-- 태그사용 -->
+    <context:property-placeholder location="/properties/fileConfig.properties"/>
+
+	<!-- 빈등록 -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>    
+                <value>/properties/fileConfig.properties</value>
+            </list>
+        </property>
+    </bean>
+
 </beans>
